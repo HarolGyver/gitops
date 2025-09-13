@@ -57,7 +57,7 @@ jobs:
           git config --global user.email 'github-actions@github.com'
           git add k8s/kustomization.yaml
           git commit -m "Update image tag to ${{ github.sha }}" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/HarolGyver/gitops.git main
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/HarolGyver/gitops.git main
 
       - name: Aplicar Kustomize
         run: kustomize build k8s | kubectl apply -f -
