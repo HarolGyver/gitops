@@ -30,7 +30,6 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/gitops:${{ github.sha }},${{ secrets.DOCKER_USERNAME }}/gitops:latest
 
-
       - name: Install Kustomize
         run: |
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
@@ -46,14 +45,11 @@ jobs:
       - name: Verificar versão kubectl
         run: kubectl version --client
 
-      - name: Aplicar Kustomize
-        run: kustomize build ./k8s | kubectl apply -f -
-
-
       - name: Update Kustomization with new image tag
         run: |
           cd GITOPS/k8s
           kustomize edit set image goserver=${{ secrets.DOCKER_USERNAME }}/gitops:${{ github.sha }}
+          cd ../..
 
       - name: Commit and push changes to Kustomization
         run: |
@@ -62,3 +58,6 @@ jobs:
           git add GITOPS/k8s/kustomization.yaml
           git commit -m "Update image tag to ${{ github.sha }}" || echo "No changes to commit"
           git push origin main
+
+      - name: Aplicar Kustomize
+        run: kustomize build GITOPS/k8s | kubectl apply -f -
