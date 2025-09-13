@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - 'FULLSTACK/GITOPS/**'
+      - 'GITOPS/**'
       - '.github/workflows/cd.yml'
   workflow_dispatch:
 jobs:
@@ -29,4 +29,21 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/gitops:${{ github.sha }},${{ secrets.DOCKER_USERNAME }}/gitops:latest
-          
+
+      - name: Set up Kustomize
+        uses: imranismail/setup-kustomize@v1.0.0
+        with:
+          kustomize-version: '4.5.7'
+
+      - name: Update Kustomization with new image tag
+        run: |
+          cd GITOPS/k8s
+          kustomize edit set image goserver=${{ secrets.DOCKER_USERNAME }}/gitops:${{ github.sha }}
+
+      - name: Commit and push changes to Kustomization
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add GITOPS/k8s/kustomization.yaml
+          git commit -m "Update image tag to ${{ github.sha }}" || echo "No changes to commit"
+          git push origin main

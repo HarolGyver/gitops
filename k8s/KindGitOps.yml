@@ -1,0 +1,15 @@
+apiVersion: kind.x-k8s.io/v1alpha4
+kind: Cluster
+
+# Kind cluster configuration file for creating a Kubernetes cluster with 5 nodes.
+# Uses the latest stable kindest/node image (v1.30.0 as of June 2024).
+name: gitops
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.30.0
+  - role: control-plane
+    image: kindest/node:v1.30.0
+  - role: worker
+    image: kindest/node:v1.30.0
+  - role: worker
+    image: kindest/node:v1.30.0
