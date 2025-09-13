@@ -55,7 +55,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          git add GITOPS/k8s/kustomization.yaml
+          git add k8s/kustomization.yaml
           git commit -m "Update image tag to ${{ github.sha }}" || echo "No changes to commit"
           git push origin main
 
