@@ -8,4 +8,4 @@ resources:
 images:
 - name: goserver
   newName: harolgyver/gitops
-  newTag: 007c0c8c8feee295289a7d47b785258a4faa8b84
+  newTag: 0f3e286e6641a8445cc94962e0373ebfab0ba5fd
