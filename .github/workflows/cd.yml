@@ -34,6 +34,12 @@ jobs:
         uses: imranismail/setup-kustomize@v1.0.0
         with:
           kustomize-version: '4.5.7'
+      - name: Verificar versão instalada
+        run: kustomize version
+
+      - name: Aplicar Kustomize
+        run: kustomize build ./k8s | kubectl apply -f -
+
 
       - name: Update Kustomization with new image tag
         run: |
